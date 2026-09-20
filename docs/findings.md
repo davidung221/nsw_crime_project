@@ -1,7 +1,7 @@
 # Findings
 
 This document summarises the key results from the analysis, organised by theme.
-See the corresponding `.sql` files for the queries behind each finding.
+See the corresponding .sql files for the queries behind each finding in the code folder.
 
 ---
 
@@ -24,18 +24,24 @@ the year partially — January to March at the time of analysis.)*
 
 ## Has the composition of crime changed over time?
 
-| Rank | 1995-1997 | 2023-2025 |
+| Rank | Past (1995-1997) | Present (2023-2025) |
 |---|---|---|
 | 1 | Malicious damage to property | Transport regulatory offences |
-| 2 | Theft (breaking and entering) | Breaching bail conditions |
-| 3 | Theft (stealing from motor vehicles) | Intimidation, stalking, harassment |
-| 4 | Theft (stealing from stores) | Malicious damage to property |
-| 5 | Fraud | Fraud |
-| ... | Assault | Domestic violence |
+| 2 | Theft — Break and enter dwelling | Against justice procedures — Breach bail conditions |
+| 3 | Theft — Steal from motor vehicle | Intimidation, stalking and harassment |
+| 4 | Theft — Other theft | Malicious damage to property |
+| 5 | Theft — Motor vehicle theft | Theft — Fraud |
+| 6 | Theft — Break and enter non-dwelling | Assault — Domestic violence related |
+| 7 | Assault — Non-domestic violence related | Assault — Non-domestic violence related |
+| 8 | Theft — Steal from dwelling | Theft — Steal from retail store |
+| 9 | Theft — Steal from retail store | Theft — Steal from motor vehicle |
+| 10 | Theft — Fraud | Against justice procedures — Breach AVO |
 
-The composition has shifted notably. Property-focused offences (theft,
-malicious damage) dominated the mid-1990s, while regulatory and
-justice-procedure offences (transport offences, bail breaches) now lead.
+The composition has shifted considerably. In 1995-1997, **8 of the top 10**
+offence types were theft-related, with malicious damage to property and assault 
+rounding out the list. Presently, theft still takes 3 of the top 10 spots, with fraud
+incidents increasing notably. 
+
 Fraud, domestic violence, and reckless driving all show a markedly higher
 ranking in the current period than 30 years ago, while several theft
 subcategories have dropped out of the top ranks entirely.
