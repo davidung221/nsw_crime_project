@@ -146,43 +146,54 @@ keep the rate and its denominator aligned in time.
 | 10 | Beaumont Hills | 9,041 | 156 | 1,725 |
 
 *Note: The gap between the highest and lowest per-capita suburbs is substantial even 
-after applying the population floor — Haymarket's rate is roughly 90x that of Cherrybrook. 
+after applying the population floor. Haymarket's rate is 92x that of Cherrybrook. 
 The suburbs at the low end (Cherrybrook, Hornsby Heights, Glenhaven, Kenthurst, Beaumont Hills) 
-are predominantly outer-suburban, low-density residential areas in Sydney's north-west and upper 
-north shore, while the highest-rate suburbs are a mix of high-density inner-city/commercial precincts 
-(Haymarket, Newtown) and outer-metro centres with known socioeconomic disadvantage (Mount Druitt, 
-Campbelltown, Liverpool) — consistent with the unemployment and income correlations found elsewhere in this analysis.*
+are predominantly low-density residential suburbs in Greater Sydney's north-western and upper 
+north shore areas, while the highest-rate suburbs are a mix of high-density inner-city and 
+commercial precincts (Haymarket, Newtown) and outer Greater Sydney suburbs associated with 
+lower socioeconomic indicators (Mount Druitt, Campbelltown, Liverpool). This is consistent 
+with the unemployment and income correlations found later in this analysis.
 
 **A population floor of 5,000 was applied before ranking suburbs.** Per-capita
-rates calculated on very small populations are highly unstable — a single
-incident in a suburb of 20 people can swing the rate by thousands per 100,000,
+rates calculated on very small populations are highly unstable. One
+incident in a suburb of 20 people can swing the rate by 5000 per 100,000,
 distorting the ranking without reflecting any real difference in crime. A floor
-of 5,000 limits this effect to roughly 20 incidents per 100,000 per
+of 5,000 limits this effect to roughly 20 per 100,000 per
 single-incident swing, striking a balance between statistical reliability and
 retaining most of the state's suburbs in the analysis (a stricter floor, such
 as 10,000, would have excluded much of regional and rural NSW).
 
 Without a population floor, the highest-rate suburbs were dominated by
 non-residential or near-uninhabited localities (an aerodrome, industrial and
-park land) with populations in the single digits — a statistical artefact of
-dividing by an almost-zero denominator, not a meaningful finding.
+park land) which skewed the results significantly.
 
 **With the floor applied**, the highest per-capita rates belonged to suburbs
 including Maitland, Haymarket, Hexham, Gosford, and Kempsey. Haymarket in
-particular — Sydney's Chinatown/entertainment and retail precinct — likely
-reflects high foot traffic and commercial activity relative to its resident
+particular likely reflects high foot traffic and commercial activity relative to its resident
 population, rather than elevated risk to residents specifically.
 
-**Assault and homicide specifically:** [FILL IN — top suburbs for this
-category subset, if notable]
+**Violent crime specifically (Assault and Homicide):** 
+
+| Rank | Suburb | Population | Total incidents | Incidents per 100k |
+|---|---|---|---|---|
+| 1 | Moree | 8,962 | 379 | 4,228 |
+| 2 | Bathurst | 7,001 | 255 | 3,642 |
+| 3 | Haymarket | 8,305 | 276 | 3,323 |
+| 4 | Nowra | 9,956 | 325 | 3,264 |
+| 5 | North Albury | 6,232 | 170 | 2,727 |
+| 6 | Broken Hill | 17,706 | 425 | 2,400 |
+| 7 | Byron Bay | 6,330 | 150 | 2,369 |
+| 8 | Coffs Harbour | 27,089 | 624 | 2,303 |
+| 9 | Kingswood (Penrith) | 10,633 | 238 | 2,238 |
+| 10 | Nambucca Heads | 6,675 | 149 | 2,232 |
+
+Restricting the per-capita ranking to assault and homicide specifically reveals a different geographic pattern than the all-offences ranking. Regional NSW suburbs (Moree, Bathurst, Nowra, Broken Hill) dominate, rather than the Greater Sydney suburbs that led the overall ranking.
 
 ---
 
 ## Socioeconomic correlations
 
-Using 2021 census data joined via `sal_code`, correlations were calculated
-between incidents-per-capita and five socioeconomic indicators (suburbs with
-population > 5,000):
+Correlations were calculated between incidents-per-capita and five socioeconomic indicators.
 
 | Variable | Correlation (r) | Interpretation |
 |---|---|---|
@@ -190,15 +201,32 @@ population > 5,000):
 | Median household income | -0.329 | Weak-to-moderate negative relationship |
 | Volunteer participation rate | -0.120 | Weak negative relationship |
 | Year 12 completion rate | -0.054 | Negligible |
-| ADF service history rate | -0.036 | Negligible (included as a sanity check — no theoretical reason to expect a relationship, which this confirms) |
+| ADF service history rate | -0.036 | Negligible at the suburb, all-offences level |
 
 **Interpretation:** unemployment rate showed the strongest relationship with
 incidents-per-capita, followed by income. Because income and unemployment are
 likely correlated with each other, these results should not be read as two
-independent confirmations of a socioeconomic-disadvantage effect — a multiple
-regression would be needed to isolate each variable's independent
-contribution, which is beyond the scope of this SQL-based analysis. Education
-and ADF service history showed no meaningful relationship.
+independent confirmations of a socioeconomic-disadvantage effect. A multi-regression analysis
+would be needed to isolate each variable's independent
+contribution, which is beyond the scope of this SQL-based analysis. Education 
+showed a negligible correlation at this aggregate level, though this likely partly 
+reflects the completion-rate measure being calculated against total population 
+rather than working-age population, as noted in the limitations below.
+
+ADF service history also showed a negligible correlation (r = -0.036), but this shouldn't be 
+read as evidence that no relationship exists. Research specifically on combat exposure has 
+found meaningful links to both domestic violence and broader offending* — one study found 
+combat exposure more than quadrupled the odds of domestic violence among veterans (Prigerson, 
+Maciejewski & Rosenheck, 2002), and a 2022 study of active-duty service members found combat 
+deployment increased criminal behaviour by 2-3% (Council on Criminal Justice, 2024)**. However, 
+these effects are specific to combat exposure and often mediated by PTSD — not a general 
+property of "having served." A blunt, suburb-level rate of ADF service history (with no 
+distinction for combat exposure, era, or individual-level offending) is unlikely to detect 
+an effect that the research itself shows is conditional on these more specific factors.
+
+*https://pmc.ncbi.nlm.nih.gov/articles/PMC2925261/
+
+**https://counciloncj.org/from-service-to-sentencing-unraveling-risk-factors-for-criminal-justice-involvement-among-u-s-veterans/
 
 ---
 
@@ -215,23 +243,34 @@ than the correlation coefficient alone:
 | 3 | 5.05% | 7,278.30 |
 | 4 (highest) | 7.78% | 12,213.26 |
 
-The relationship is monotonic — each quartile step up in unemployment
-corresponds to a step up in crime rate, with no reversals. The highest-
+The relationship is monotonic, with each quartile in unemployment
+corresponding to an increase in crime rate. The highest-
 unemployment quartile shows a per-capita rate roughly **three times** that of
-the lowest-unemployment quartile — a clearer and more visually compelling
-presentation of the same relationship captured in the correlation coefficient
-above.
+the lowest-unemployment quartile.
 
 ---
 
 ## Limitations
 
 - Per-capita and correlation analysis uses a single census year (2021) and is
-  not a trend over time — population data for other years was not available.
+  not a trend over time. Population data for other years was not available.
 - Correlation does not imply causation. Several plausible confounders
   (population density, foot traffic, offence-type mix, reporting differences)
   were not controlled for.
 - Year 12 completion rate is calculated against total population rather than
-  working-age population, since age-bracketed population data wasn't
-  available — this likely understates the true completion rate in suburbs
+  working-age population. This likely understates the true completion rate in suburbs
   with younger populations.
+- All incident data reflects offences recorded by police, not all
+  offences that occurred. Reporting rates can vary by various factors, including; offence type, community
+  trust in police, policing intensity, and may not be uniform across
+  suburbs or over the 30-year period covered by the NSW-wide analysis.
+- Category definitions and recording practices may have changed over the
+  30-year period analysed (1995-2025). Some of the shift in offence
+  composition over time (e.g. the emergence of "breach bail conditions" and
+  domestic violence assault as top-10 categories) may partly reflect
+  legislative or recording changes rather than purely behavioural change.
+- 2026 is excluded from all year-based comparisons, as the dataset covers
+  only part of that year.
+- Income and unemployment are likely correlated with each other, so their
+  individual correlation results should not be read as two independent
+  confirmations of a socioeconomic-disadvantage effect. 
