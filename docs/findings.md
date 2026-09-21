@@ -271,3 +271,4 @@ the lowest-unemployment quartile.
   legislative or recording changes rather than purely behavioural change.
 - 2026 is excluded from all year-based comparisons, as the dataset covers
   only part of that year.
+- Introducing a population floor to reduce noise removed all the suburbs with smaller populations, potentially missing out on key insights.
