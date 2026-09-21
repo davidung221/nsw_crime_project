@@ -271,6 +271,3 @@ the lowest-unemployment quartile.
   legislative or recording changes rather than purely behavioural change.
 - 2026 is excluded from all year-based comparisons, as the dataset covers
   only part of that year.
-- Income and unemployment are likely correlated with each other, so their
-  individual correlation results should not be read as two independent
-  confirmations of a socioeconomic-disadvantage effect. 
