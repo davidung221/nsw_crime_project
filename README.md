@@ -7,6 +7,8 @@ study built by joining incident data to 2021 census data at the suburb level).
 
 ![Dashboard Overview](images/dashboard_overview.png)
 
+Interactive Dashboard: https://app.powerbi.com/view?r=eyJrIjoiYmQ1M2ZjMTgtMWRkNi00NTM5LWIzNDctZjM5OGU1YzFlNGQyIiwidCI6ImJlNGM2MTY5LTAzYTctNDMyNy05ZTk3LTlmOTkyY2NhZTQ0NCJ9&pageName=251fb8a54ec8b343457c
+
 ---
 
 ## Project overview
