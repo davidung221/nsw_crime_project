@@ -5,7 +5,7 @@ data across NSW, using PostgreSQL. The project covers database design, data
 cleaning, normalisation, and analysis (including a socioeconomic correlation
 study built by joining incident data to 2021 census data at the suburb level).
 
-**Status:** SQL analysis complete. Power BI dashboard in progress.
+![Dashboard Overview](images/dashboard_overview.png)
 
 ---
 
@@ -70,6 +70,8 @@ incident rate roughly **three times** that of the lowest quartile.
 
 Full findings, including all result tables and their interpretation, are in
 [`docs/findings.md`](docs/findings.md).
+
+![Dashboard Analysis](images/dashboard_suburb_analysis.png)
 
 ---
 
