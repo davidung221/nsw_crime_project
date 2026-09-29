@@ -5,9 +5,7 @@ data across NSW, using PostgreSQL. The project covers database design, data
 cleaning, normalisation, and analysis (including a socioeconomic correlation
 study built by joining incident data to 2021 census data at the suburb level).
 
-![Dashboard Overview](images/dashboard_overview.png)
-
-Interactive Dashboard: https://app.powerbi.com/view?r=eyJrIjoiYmQ1M2ZjMTgtMWRkNi00NTM5LWIzNDctZjM5OGU1YzFlNGQyIiwidCI6ImJlNGM2MTY5LTAzYTctNDMyNy05ZTk3LTlmOTkyY2NhZTQ0NCJ9&pageName=251fb8a54ec8b343457c
+**In progress:** Power BI Dashboard.
 
 ---
 
@@ -34,8 +32,6 @@ fact tables (`incidents`, `suburbs`), linked as follows:
 
 - `offence_type` classifies both `incidents` and `suburbs`, via `offence_id`
 - `census` links to `suburbs`, via `sal_code`
-
-![NSW crime database schema](images/table_schema.png)
 
 | Table | Grain | Key columns |
 |---|---|---|
@@ -72,8 +68,6 @@ incident rate roughly **three times** that of the lowest quartile.
 
 Full findings, including all result tables and their interpretation, are in
 [`docs/findings.md`](docs/findings.md).
-
-![Dashboard Analysis](images/dashboard_suburb_analysis.png)
 
 ---
 
