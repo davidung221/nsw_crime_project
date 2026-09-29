@@ -42,15 +42,16 @@ offence types were theft-related, with malicious damage to property and assault
 rounding out the list. Presently, theft still takes 3 of the top 10 spots, with fraud
 incidents increasing notably. 
 
-Fraud, domestic violence, and reckless driving all show a markedly higher
-ranking in the current period than 30 years ago, while several theft
-subcategories have dropped out of the top ranks entirely.
+Transport regulatory offences, breaching bail conditions, initimidation, stalking and harassment are new
+to the list and take the top 3 spots, while several theft subcategories have dropped out of the top ranks.
+Domestic violence is now in the top 10, which could either be because more of it is being committed, or it could
+be that changes to social norms have increased the rate at which domestic violence incidents are being reported.
 
 ---
 
 ## Suburb-level rankings
 
-**Highest incident volume, last 5 years (2020-2025):**
+**Highest incident volume, last 6 years (2020-2025):**
 
 | Rank | Suburb | Total incidents |
 |---|---|---|
@@ -81,7 +82,7 @@ subcategories have dropped out of the top ranks entirely.
 | 10 | Cabramatta | 114,439 |
 
 **Specific offence types:** targeted queries were run for abduction/kidnapping
-and murder specifically over the last 5 years (2020-2025), to look at serious
+and murder specifically over the last 6 years (2020-2025), to look at serious
 offence types separately from the aggregate volume rankings. 
 
 **Top 5 suburbs — abduction and kidnapping (2020-2025):**
@@ -147,28 +148,25 @@ keep the rate and its denominator aligned in time.
 
 *Note: The gap between the highest and lowest per-capita suburbs is substantial even 
 after applying the population floor. Haymarket's rate is 92x that of Cherrybrook. 
-The suburbs at the low end (Cherrybrook, Hornsby Heights, Glenhaven, Kenthurst, Beaumont Hills) 
-are predominantly low-density residential suburbs in Greater Sydney's north-western and upper 
+Of the lowest-rate suburbs, half are in Greater Sydney's north-western and upper 
 north shore areas, while the highest-rate suburbs are a mix of high-density inner-city and 
 commercial precincts (Haymarket, Newtown) and outer Greater Sydney suburbs associated with 
-lower socioeconomic indicators (Mount Druitt, Campbelltown, Liverpool). This is consistent 
-with the unemployment and income correlations found later in this analysis.
+lower socioeconomic indicators (Mount Druitt, Campbelltown, Liverpool). Surprisingly, 
+many regional suburbs (Moree, Nowra, Bathurst, Byron Bay) have high rates as well.
 
 **A population floor of 5,000 was applied before ranking suburbs.** Per-capita
 rates calculated on very small populations are highly unstable. One
 incident in a suburb of 20 people can swing the rate by 5000 per 100,000,
 distorting the ranking without reflecting any real difference in crime. A floor
 of 5,000 limits this effect to roughly 20 per 100,000 per
-single-incident swing, striking a balance between statistical reliability and
-retaining most of the state's suburbs in the analysis (a stricter floor, such
-as 10,000, would have excluded much of regional and rural NSW).
+single-incident swing, improving statistical reliability.
 
 Without a population floor, the highest-rate suburbs were dominated by
 non-residential or near-uninhabited localities (an aerodrome, industrial and
 park land) which skewed the results significantly.
 
 **With the floor applied**, the highest per-capita rates belonged to suburbs
-including Maitland, Haymarket, Hexham, Gosford, and Kempsey. Haymarket in
+such as Haymarket, Mount Druitt and Campbelltown. Haymarket in
 particular likely reflects high foot traffic and commercial activity relative to its resident
 population, rather than elevated risk to residents specifically.
 
@@ -193,11 +191,11 @@ Restricting the per-capita ranking to assault and homicide specifically reveals 
 
 ## Socioeconomic correlations
 
-Correlations were calculated between incidents-per-capita and five socioeconomic indicators.
+Correlations were calculated between incidents-per-capita and five socioeconomic indicators. This data is based off the year 2021, applying a population floor > 5000, and the Pearson method.
 
 | Variable | Correlation (r) | Interpretation |
 |---|---|---|
-| Unemployment rate | +0.379 | Weakest-to-moderate positive relationship — the strongest of the five |
+| Unemployment rate | +0.379 | Weak-to-moderate positive relationship — the strongest of the five |
 | Median household income | -0.329 | Weak-to-moderate negative relationship |
 | Volunteer participation rate | -0.120 | Weak negative relationship |
 | Year 12 completion rate | -0.054 | Negligible |
