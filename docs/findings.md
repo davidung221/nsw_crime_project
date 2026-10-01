@@ -1,7 +1,7 @@
 # Findings
 
 This document summarises the key results from the analysis, organised by theme.
-See the corresponding .sql files for the queries behind each finding in the code folder.
+See the .sql files in the code folder for the queries behind each finding.
 
 ---
 
@@ -11,7 +11,7 @@ See the corresponding .sql files for the queries behind each finding in the code
 In 2001, NSW averaged approximately 2,180 recorded incidents per day.
 
 **Long-term trend:** total recorded incidents rose steadily from 1995, peaking
-in 2001, and have declined fairly steadily since then.
+in 2001, then generally declined with some fluctuation.
 
 **COVID-19 (2020):** 2020 saw the largest single year-over-year drop in the
 dataset, consistent with the impact of lockdown restrictions on opportunities
@@ -40,7 +40,7 @@ the year partially — January to March at the time of analysis.)*
 The composition has shifted considerably. In 1995-1997, **8 of the top 10**
 offence types were theft-related, with malicious damage to property and assault 
 rounding out the list. Presently, theft still takes 3 of the top 10 spots, with fraud
-incidents increasing notably. 
+rising from 10th to 5th. 
 
 Transport regulatory offences, breaching bail conditions, initimidation, stalking and harassment are new
 to the list and take the top 3 spots, while several theft subcategories have dropped out of the top ranks.
@@ -92,8 +92,8 @@ offence types separately from the aggregate volume rankings.
 | 1 | Dubbo | 24 |
 | 2 | Coffs Harbour | 18 |
 | 3 | Greenacre | 17 |
-| 4 | Bankstown | 17 |
-| 5 | Auburn | 16 |
+| 3 | Bankstown | 17 |
+| 4 | Auburn | 16 |
 
 **Top 5 suburbs — murder (2020-2025):**
 
@@ -101,9 +101,9 @@ offence types separately from the aggregate volume rankings.
 |---|---|---|
 | 1 | Bondi Beach | 15 |
 | 2 | Coffs Harbour | 7 |
-| 3 | Bondi Junction | 7 |
-| 4 | Liverpool | 5 |
-| 5 | Belmore | 4 |
+| 2 | Bondi Junction | 7 |
+| 3 | Liverpool | 5 |
+| 4 | Belmore | 4 |
 
 *Note: at these low volumes, small differences in incident count can shift rankings meaningfully. 
 Bondi Beach's 1st place ranking for murder is solely from the 14 December 2025 terrorist attack.*
@@ -213,18 +213,9 @@ rather than working-age population, as noted in the limitations below.
 
 ADF service history also showed a negligible correlation (r = -0.036), but this shouldn't be 
 read as evidence that no relationship exists. Research specifically on combat exposure has 
-found meaningful links to both domestic violence and broader offending* — one study found 
-combat exposure more than quadrupled the odds of domestic violence among veterans (Prigerson, 
-Maciejewski & Rosenheck, 2002), and a 2022 study of active-duty service members found combat 
-deployment increased criminal behaviour by 2-3% (Council on Criminal Justice, 2024)**. However, 
-these effects are specific to combat exposure and often mediated by PTSD — not a general 
-property of "having served." A blunt, suburb-level rate of ADF service history (with no 
-distinction for combat exposure, era, or individual-level offending) is unlikely to detect 
-an effect that the research itself shows is conditional on these more specific factors.
-
-*https://pmc.ncbi.nlm.nih.gov/articles/PMC2925261/
-
-**https://counciloncj.org/from-service-to-sentencing-unraveling-risk-factors-for-criminal-justice-involvement-among-u-s-veterans/
+found meaningful links to both domestic violence and broader offending. A blunt, suburb-level rate 
+of ADF service history (with no 
+distinction for combat exposure, era, or individual-level offending) doesn't give enough information for a meaningful analysis.
 
 ---
 
@@ -251,7 +242,7 @@ the lowest-unemployment quartile.
 ## Limitations
 
 - Per-capita and correlation analysis uses a single census year (2021) and is
-  not a trend over time. Population data for other years was not available.
+  not a trend over time. The latest census year data was unavailable.
 - Correlation does not imply causation. Several plausible confounders
   (population density, foot traffic, offence-type mix, reporting differences)
   were not controlled for.
@@ -259,7 +250,7 @@ the lowest-unemployment quartile.
   working-age population. This likely understates the true completion rate in suburbs
   with younger populations.
 - All incident data reflects offences recorded by police, not all
-  offences that occurred. Reporting rates can vary by various factors, including; offence type, community
+  offences that occurred. Reporting rates can vary by various factors, including: offence type, community
   trust in police, policing intensity, and may not be uniform across
   suburbs or over the 30-year period covered by the NSW-wide analysis.
 - Category definitions and recording practices may have changed over the
@@ -270,3 +261,5 @@ the lowest-unemployment quartile.
 - 2026 is excluded from all year-based comparisons, as the dataset covers
   only part of that year.
 - Introducing a population floor to reduce noise removed all the suburbs with smaller populations, potentially missing out on key insights.
+- Sydney was in lockdown from around June-October 2021, including census night. That likely lowered Sydney's 2021 crime counts relative
+to regional NSW, and may have affected unemployment figures. This has a noticeable impact on the incidents-per-100k and violent-crime comparisons.
