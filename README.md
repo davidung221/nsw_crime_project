@@ -47,7 +47,7 @@ of incident counts (`incidents`, `suburbs`).
 - `offence_type` → `incidents` and `suburbs`, via `offence_id`
 - `census` → `suburbs`, via `sal_code`
 
-`CREATE TABLE` statements are in [`sql/01_setup/`](sql/01_setup/).
+`CREATE TABLE` statements are in [`code/01_setup/`](code/01_setup/).
 
 ---
 
