@@ -93,9 +93,6 @@ Full findings, including all result tables and their interpretation, are in
 
 ## Notable technical points
 
-Things worth highlighting from the build process — full detail in
-[`docs/challenges_and_fixes.md`](docs/challenges_and_fixes.md):
-
 - **Fixed a performance bottleneck across 72.3 million rows.** Matching suburb names
   between the incident and census data needed regex-based text normalisation (for
   example, stripping ABS suffixes like `"(NSW)"`). Run inline in the join, the query
@@ -107,11 +104,19 @@ Things worth highlighting from the build process — full detail in
 - **Normalised the schema** with lookup tables and foreign keys, instead of repeating
   category and suburb text across millions of rows.
 
+Things worth highlighting from the build process — full detail in
+[`docs/challenges_and_fixes.md`](docs/challenges_and_fixes.md):
+
 ---
 
 ## Limitations
 
-The constraints of this project are detailed in 
-[`docs/findings.md`](docs/findings.md#limitations). Limitations include the use of a
-single census year (2021), variables influenced by various unaccounted confounders, and 
-incidents-per-capita analysis excluding smaller suburb populations.
+- Per-capita and correlation results use a single Census year (2021), which overlapped
+  with Sydney's extended 2021 lockdown.
+- Correlation is not causation. Confounders such as population density and visitor
+  numbers weren't controlled for.
+- The 5,000-resident floor stabilises per-capita rates but excludes most smaller suburbs.
+- All data is police-recorded crime, so it reflects reporting and policing as well as
+  offending.
+
+The full list is in [`docs/findings.md`](docs/findings.md#limitations).
