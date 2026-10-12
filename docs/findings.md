@@ -32,8 +32,6 @@ data truncation issue described in [challenges_and_fixes.md](challenges_and_fixe
 
 ## 1. How has crime changed?
 
-*SQL: `01_how_crime_changed.sql`*
-
 ### Recorded crime peaked in 2001 and has fallen about 21% since
 
 | | Year | Recorded incidents |
@@ -95,8 +93,6 @@ over 30 years.
 ---
 
 ## 2. Where is crime concentrated?
-
-*SQL: `02_where_crime_is_concentrated.sql`*
 
 ### By volume: Liverpool leads recently, Sydney CBD leads all-time
 
@@ -252,8 +248,6 @@ show places large enough for their rates to be stable.
 ---
 
 ## 3. What is crime linked to?
-
-*SQL: `03_links_to_disadvantage.sql`*
 
 All results in this section use 2021 data and suburbs with more than 500 residents
 (1,573 suburbs).
