@@ -32,6 +32,8 @@ data truncation issue described in [challenges_and_fixes.md](challenges_and_fixe
 
 ## 1. How has crime changed?
 
+*SQL: `01_how_crime_changed.sql`*
+
 ### Recorded crime peaked in 2001 and has fallen about 21% since
 
 | | Year | Recorded incidents |
@@ -46,17 +48,35 @@ data truncation issue described in [challenges_and_fixes.md](challenges_and_fixe
 - These are counts, not rates. NSW's population grew over this period, so the
   fall per resident is likely larger than the fall in counts.
 
-### 2020 had the largest single-year drop
+### COVID-19: a real drop in 2020, and a rule-enforcement spike in 2021
 
-| Year | Change from previous year |
-|---|---|
-| 2020 | **−10.9%** |
-| 2021 | +7.9% |
-| 2022 | −9.2% |
+At first glance, 2020–2022 looks like a drop, a rebound, then another drop.
+Removing the "Other offences" category shows a different picture:
 
-- The 2020 drop lines up with COVID-19 lockdowns.
-- 2022 fell almost as sharply as 2020. This is worth a closer look with
-  monthly data.
+| Year | All offences | Change | Excluding "Other offences" | Change |
+|---|---|---|---|---|
+| 2019 | 714,183 | +3.2% | 699,514 | +3.3% |
+| 2020 | 636,100 | **−10.9%** | 608,555 | **−13.0%** |
+| 2021 | 686,187 | +7.9% | 592,726 | −2.6% |
+| 2022 | 622,909 | −9.2% | 602,091 | +1.6% |
+| 2023 | 649,948 | +4.3% | 636,416 | +5.7% |
+
+- **2020's drop was real.** Recorded crime fell 13% across the usual offence
+  types, in line with the first COVID-19 lockdowns.
+- **2021's rise came from one category.** "Other offences" jumped from 2,125 in
+  July–August 2019 to 46,872 in July–August 2021, during Greater Sydney's Delta
+  lockdown. This is consistent with enforcement of COVID-19 public health
+  orders: BOCSAR reported that NSW Police issued 36,597 public health order
+  breaches in those two months ([BOCSAR, 2021](https://bocsar.nsw.gov.au/media/2021/mr-covid-breaches-bb157.html)).
+- **Without that category, crime kept falling in 2021 (−2.6%)**, then recovered
+  slowly in 2022–2023. The 2022 "drop" in the all-offences figures is mostly
+  the end of the 2021 enforcement spike.
+- **Recorded crime hasn't returned to pre-COVID levels.** Excluding "Other
+  offences", 2025 is 12% below 2019.
+
+*Note: the source data doesn't say which category public health order breaches
+were recorded under. The match in timing and size makes "Other offences" the
+likely category, but this is an inference, not something the data confirms.*
 
 ### Property crime used to dominate; now regulatory and justice offences lead
 
@@ -93,6 +113,8 @@ over 30 years.
 ---
 
 ## 2. Where is crime concentrated?
+
+*SQL: `02_where_crime_is_concentrated.sql`*
 
 ### By volume: Liverpool leads recently, Sydney CBD leads all-time
 
@@ -233,21 +255,27 @@ over 30 years.
 
 ### Why a 2,000 floor for these lists
 
-At lower floors, half or more of each top-10 list were places with fewer than
-2,000 residents, mostly commercial pockets and very small towns:
+The lists were also run at floors of 500 and 1,000. At those levels, the top
+of the lists was led by places where a rate per resident is misleading:
 
-- **At a 500 floor,** the lowest-rate "suburb" was the Singleton Military Area,
-  and the highest-rate list was led by small commercial areas (Maitland CBD,
-  Sydenham, The Rocks).
-- **At a 1,000 floor,** 5 of the top 10 in both the all-offences and violent
-  crime lists still had fewer than 2,000 residents.
+- **Commercial and industrial areas with few residents,** such as Maitland CBD,
+  Sydenham, Broadmeadow and Wickham. Their incidents involve shoppers and workers,
+  but their rates divide by a small number of residents.
+- **Non-residential land:** at a 500 floor, the lowest-rate "suburb" was the
+  Singleton Military Area.
+- **Very small places,** whose rates change more from year to year, so a single
+  year's ranking is less reliable.
 
-At 2,000, one incident moves a rate by at most 50 per 100,000, and the lists
-show places large enough for their rates to be stable.
+A 2,000 floor removes most of these. **The trade-off:** it also drops some small
+towns with genuinely high rates, such as Bourke and Walgett. They are still
+included in the correlation and decile analysis in Section 3, which uses a
+500 floor.
 
 ---
 
 ## 3. What is crime linked to?
+
+*SQL: `03_links_to_disadvantage.sql`*
 
 All results in this section use 2021 data and suburbs with more than 500 residents
 (1,573 suburbs).
@@ -292,7 +320,7 @@ Correlation between each suburb's crime rate and each characteristic:
 | Median weekly household income | −0.24 | Weak to moderate |
 | IEO score (education and occupation) | −0.16 | Weak |
 | Volunteering rate | −0.15 | Weak |
-| Year 12 completion rate | −0.06 | Negligible |
+| Year 12 completion rate | −0.12 | Weak |
 | ADF service rate | −0.04 | Negligible |
 
 *Correlation (r) ranges from −1 to +1. A negative value means the two move in
@@ -306,13 +334,14 @@ lower crime rate.*
   to have lower incomes. Their results are not two separate confirmations of the
   same effect. Separating them would need a multiple regression, which is beyond
   the scope of this SQL analysis.
-- **Checking the education result:** the Year 12 completion rate showed almost
-  no link (−0.06), but it divides by total population, children included, which
-  makes it a weak measure. The ABS's education and occupation index (IEO) is
-  built from the right age groups and shows a clearer link (−0.16). So the Year 12
-  result is likely a measurement problem, not evidence that education has no link
-  to crime. IEO also overlaps with IRSD, so it can't show education's effect on
-  its own.
+- **Checking the education result:** the Year 12 completion rate first showed
+  almost no link (−0.06), while the ABS's education and occupation index (IEO)
+  showed a clearer one (−0.16). That gap pointed to a measurement problem: the
+  Year 12 rate was dividing people aged 15+ by the total population, children
+  included. Using the population aged 15+ as the denominator doubled the
+  correlation to −0.12, in line with IEO. Education on its own still has only a
+  weak link. IEO also overlaps with IRSD, so it can't show education's separate
+  effect.
 - **ADF service history** showed a negligible link. A suburb-wide share of
   residents who have served is too blunt to test what research on veterans
   actually looks at, such as combat exposure and individual-level offending.
@@ -364,9 +393,11 @@ characteristics move together with recorded crime rates, not what causes crime.
   practices changed over 30 years, which affects comparisons between 1995–1997 and
   2023–2025. Coercive control only became an offence in July 2024, so it has no
   earlier history.
+- **COVID-19 rule enforcement.** "Other offences" spiked in 2020 and especially
+  2021, most likely from public health order breaches. This inflates the
+  all-offences totals for those years.
 - **2026 is partial** (January to June) and is excluded from yearly comparisons.
-- **The census dataset was assembled by hand** from several ABS tables (see
-  [data_sources.md](data_sources.md)), so that step isn't scripted.
+
 
 **Method**
 - **One census year.** Per-capita and socioeconomic results use 2021 only. They
@@ -382,5 +413,8 @@ characteristics move together with recorded crime rates, not what causes crime.
   number of NSW suburbs in each decile varies (101 to 306).
 - **Overlapping measures.** IRSD, IEO, unemployment and income are built from
   related census data, so they can't show each factor's separate effect.
-- **Year 12 completion rate** is calculated against total population, including
-  children, because age-bracketed population data wasn't available.
+- **ABS privacy adjustments.** The ABS adds small random changes to census table
+  values to protect privacy. In very small areas this can make a subgroup larger
+  than its total (e.g. more Year 12 completions than residents aged 15+). All
+  affected areas have 53 or fewer residents and are excluded by the population
+  floors.
