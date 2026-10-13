@@ -75,34 +75,6 @@ Problems I hit along the way, and how I fixed them:
 
 ---
 
-## Repository structure
-
-```
-nsw-crime-analysis/
-├── README.md
-├── python/
-│   ├── 01_clean_nsw_data.py
-│   └── 02_clean_suburb_data.py
-├── sql/
-│   ├── 01_etl/
-│   │   ├── 01_create_tables.sql
-│   │   ├── 02_load_and_populate.sql
-│   │   └── 03_validation_checks.sql
-│   └── 02_analysis/
-│       ├── 01_how_crime_changed.sql
-│       ├── 02_where_crime_is_concentrated.sql
-│       ├── 03_what_is_crime_linked_to.sql
-│       └── 04_sensitivity_checks.sql
-├── docs/
-│   ├── findings.md
-│   └── challenges_and_fixes.md
-├── data/            -- small cleaned files only (see Data sources)
-├── dashboard/
-└── images/
-```
-
----
-
 ## Data sources
 
 | Dataset | Source | Coverage |
