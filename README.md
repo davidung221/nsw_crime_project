@@ -1,122 +1,135 @@
-# NSW Crime Analysis
+# NSW Crime Analysis (1995–2026)
 
-**How has crime in NSW changed over 30 years, and where is it concentrated?**
+**How has crime in NSW changed, and where is it concentrated?**
 
-An end-to-end SQL analysis of 30 years of police-recorded criminal incidents across
-NSW, built in PostgreSQL. The project covers database design, data cleaning,
-normalisation and analysis, including a socioeconomic correlation study that joins
-incident data to 2021 Census data at the suburb level.
+An end-to-end data analysis project using 30 years of NSW Police recorded crime
+data, joined to 2021 ABS census data for 4,520 suburbs. Built with Python,
+PostgreSQL and Power BI.
 
-**Power BI dashboard (in progress):** the overview page is complete, and the three
-detail pages are being built.
+**Dashboard:** *in progress — link and screenshots coming soon*
 
----
-
-## Project overview
-
-**Data sources**
-- [NSW Bureau of Crime Statistics and Research (BOCSAR)](https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html):
-  monthly recorded incidents by offence type and suburb, 1995–2025
-- [2021 ABS Census (SAL geography)](https://www.abs.gov.au/census/find-census-data/datapacks?release=2021&product=GCP&geography=SAL&header=S):
-  population and socioeconomic indicators by suburb
-
-**Questions this project answers**
-- How have total recorded incidents in NSW changed between 1995 and 2025?
-- How has the mix of offence types changed over 30 years?
-- Which suburbs have the most crime, by volume and per resident?
-- Do socioeconomic factors (unemployment, income, education, volunteering and ADF
-  service) relate to suburb crime rates?
-
-Full methodology, challenges and findings are documented in [`docs/`](docs/).
-
----
-
-## Schema
-
-Four tables: two reference tables (`offence_type`, `census`) and two fact tables
-of incident counts (`incidents`, `suburbs`).
-
-| Table | Type | Grain | Keys |
-|---|---|---|---|
-| `offence_type` | Reference | One row per offence category/subcategory | `offence_id` (PK) |
-| `census` | Reference | One row per suburb (SAL) | `sal_code` (PK) |
-| `incidents` | Fact | One row per offence type, per month (NSW-wide) | `offence_id` (FK) |
-| `suburbs` | Fact | One row per offence type, per month, per suburb | `offence_id` (FK), `sal_code` (FK) |
-
-**Relationships**
-- `offence_type` → `incidents` and `suburbs`, via `offence_id`
-- `census` → `suburbs`, via `sal_code`
-
-`CREATE TABLE` statements are in [`code/01_setup/`](code/01_setup/).
+<!-- When the dashboard is published, add:
+![Dashboard overview](images/dashboard_overview.png)
+[View the interactive dashboard](YOUR_PUBLISH_TO_WEB_LINK)
+-->
 
 ---
 
 ## Key findings
 
-**Crime peaked in 2001 and has generally declined since.** Recorded incidents rose
-from 528,888 in 1995 to a peak of 795,851 in 2001 (about 2,180 a day), then generally
-fell, with some fluctuation. 2020 had the largest single-year drop in the dataset,
-consistent with COVID-19 lockdowns.
+1. **Recorded crime peaked in 2001 and is now 21% lower.** NSW recorded 796,000
+   incidents in 2001, compared with 626,000 in 2025.
 
-**Theft no longer dominates.** In 1995–1997, 8 of the 10 most common offence types
-were theft. By 2023–2025, only 3 were. Transport regulatory offences and breaches of
-bail conditions now top the list, and domestic violence assault and breaches of AVOs
-have entered the top 10. Part of this shift likely reflects changes in policing and
-recording practices, not just changes in behaviour.
+2. **The most disadvantaged suburbs have about 4 times the crime rate of the
+   least disadvantaged.** This compares the most and least disadvantaged tenths
+   of suburbs, using the ABS's Index of Relative Socio-economic Disadvantage
+   (IRSD). Unemployment was the strongest single factor (r = 0.31).
 
-**Where crime concentrates depends on how you measure it.**
-- **By volume (2020–2025):** Liverpool, Blacktown and Mount Druitt lead.
-- **Per resident (2021, suburbs with 5,000+ residents):** Haymarket, Mount Druitt and
-  Campbelltown lead. Haymarket's rate reflects its large visitor and worker
-  population, not just its residents.
-- **Violent crime per resident:** regional towns lead, led by Moree, Bathurst and Nowra.
+3. **The kinds of crime recorded have changed.** In 1995–1997, 8 of the 10 most
+   common offences were theft. By 2023–2025, only 3 were, and transport offences
+   and bail breaches led the list.
 
-**Crime rates rise with unemployment.** Unemployment rate had the strongest correlation
-with suburb crime rates (r = 0.38), followed by median household income (r = −0.33).
-Suburbs in the highest-unemployment quartile have roughly **three times** the crime
-rate of the lowest. These are associations, not causes: unemployment and income
-overlap, and population density and visitor numbers weren't controlled for.
+4. **COVID-19 changed crime in two different ways.** Recorded crime fell 13% in
+   2020. In 2021, July and August spiked during the Delta lockdown, most likely
+   because of public health order breaches. Without them, crime kept falling.
 
-Full findings, including all result tables and their interpretation, are in
-[`docs/findings.md`](docs/findings.md).
+5. **Violent crime rates are highest in regional NSW.** 9 of the 10 suburbs with
+   the highest assault and homicide rates are regional towns, such as Lismore,
+   Moree and Bathurst.
+
+Full results, tables and limitations: [docs/findings.md](docs/findings.md)
 
 ---
 
-## Tech stack
+## How it was built
 
-- **PostgreSQL:** schema design, data cleaning, analysis
-- **Python (pandas):** reshaping tables, data cleaning
-- **Excel:** manual assembly of the census dataset from multiple ABS source tables
-- **Power BI:** dashboard (in progress)
+1. **Cleaned and reshaped** the BOCSAR files from wide to long format with Python
+   (105.9 million suburb rows), with checks for duplicates, missing values and
+   row counts.
+2. **Loaded into PostgreSQL** through staging tables, into a normalised schema
+   with foreign keys.
+3. **Validated coverage** against the NSW total. This check found that the
+   original suburb file stopped at "Padstow". After reloading, suburb data covers
+   99.6% of NSW incidents.
+4. **Matched suburb names to ABS census areas** using regex cleaning. All 4,520
+   suburbs matched.
+5. **Added census and SEIFA data,** and built a yearly summary table for faster
+   analysis.
+6. **Analysed in SQL:** trends, rankings, per-capita rates, correlations, and
+   comparisons by disadvantage decile, tested at several population floors.
+7. **Built a Power BI dashboard** around the main question *(in progress)*.
+
+Problems I hit along the way, and how I fixed them:
+[docs/challenges_and_fixes.md](docs/challenges_and_fixes.md)
 
 ---
 
-## Notable technical points
+## Tools
 
-- **Fixed a performance bottleneck across 72.3 million rows.** Matching suburb names
-  between the incident and census data needed regex-based text normalisation (for
-  example, stripping ABS suffixes like `"(NSW)"`). Run inline in the join, the query
-  still hadn't finished after 15+ minutes. Precomputing the normalised names into an
-  indexed lookup table resolved it.
-- **Found and fixed a silent data-loss bug.** In SQL, `NULL = NULL` evaluates to `NULL`
-  rather than true, so rows with `NULL` join keys were silently dropped from a join.
-  Changing the join condition to `IS NOT DISTINCT FROM` fixed it.
-- **Normalised the schema** with lookup tables and foreign keys, instead of repeating
-  category and suburb text across millions of rows.
+| Tool | Used for |
+|---|---|
+| **Python (pandas)** | Cleaning and reshaping the source files |
+| **PostgreSQL** | Database design, loading, validation and analysis |
+| **Excel** | Combining census tables into one file |
+| **Power BI** | Dashboard *(in progress)* |
 
-Things worth highlighting from the build process — full detail in
-[`docs/challenges_and_fixes.md`](docs/challenges_and_fixes.md):
+---
+
+## Repository structure
+
+```
+nsw-crime-analysis/
+├── README.md
+├── python/
+│   ├── 01_clean_nsw_data.py
+│   └── 02_clean_suburb_data.py
+├── sql/
+│   ├── 01_etl/
+│   │   ├── 01_create_tables.sql
+│   │   ├── 02_load_and_populate.sql
+│   │   └── 03_validation_checks.sql
+│   └── 02_analysis/
+│       ├── 01_how_crime_changed.sql
+│       ├── 02_where_crime_is_concentrated.sql
+│       ├── 03_what_is_crime_linked_to.sql
+│       └── 04_sensitivity_checks.sql
+├── docs/
+│   ├── findings.md
+│   └── challenges_and_fixes.md
+├── data/            -- small cleaned files only (see Data sources)
+├── dashboard/
+└── images/
+```
+
+---
+
+## Data sources
+
+| Dataset | Source | Coverage |
+|---|---|---|
+| Recorded criminal incidents, NSW and by suburb | [NSW Bureau of Crime Statistics and Research (BOCSAR)](https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html) | January 1995 – June 2026 (suburb file updated 16 September 2026) |
+| 2021 Census, suburbs and localities (SAL) | [Australian Bureau of Statistics (ABS) DataPacks](https://www.abs.gov.au/census/find-census-data/datapacks?release=2021&product=GCP&geography=SAL&header=S) | 2021 |
+| SEIFA 2021 (IRSD and IEO) | [ABS SEIFA](https://www.abs.gov.au/statistics/people/people-and-communities/socio-economic-indexes-areas-seifa-australia/latest-release) | 2021 |
+
+**Notes**
+- **The census file was assembled by hand** in Excel from several ABS DataPack
+  tables, so that step isn't scripted.
+- **Large files aren't in this repository.** The cleaned suburb file is 6.5 GB.
+  It can be recreated from the BOCSAR download with the Python script.
+
+**Attribution:** crime data © State of New South Wales (NSW Bureau of Crime
+Statistics and Research). Census and SEIFA data © Australian Bureau of
+Statistics. Both are used under the Creative Commons Attribution 4.0 licence
+(CC BY 4.0).
 
 ---
 
 ## Limitations
 
-- Per-capita and correlation results use a single Census year (2021), which overlapped
-  with Sydney's extended 2021 lockdown.
-- Correlation is not causation. Confounders such as population density and visitor
-  numbers weren't controlled for.
-- The 5,000-resident floor stabilises per-capita rates but excludes most smaller suburbs.
-- All data is police-recorded crime, so it reflects reporting and policing as well as
-  offending.
+- **Recorded crime only:** the data reflects what police recorded, which depends
+  on reporting and policing levels.
+- **One census year:** per-capita and socioeconomic results use 2021 only.
+- **Correlation, not causation:** the analysis shows which suburb
+  characteristics move with crime rates, not what causes crime.
 
-The full list is in [`docs/findings.md`](docs/findings.md#limitations).
+More detail: [docs/findings.md](docs/findings.md#limitations)
