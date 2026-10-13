@@ -58,3 +58,45 @@ WHERE EXTRACT(YEAR FROM i.month) BETWEEN 2023 AND 2025
 GROUP BY ot.offence_category, ot.subcategory
 ORDER BY total_incidents DESC
 LIMIT 10;
+
+-- EXTRA 1: COVID-19 check: yearly totals with and without "Other offences"
+-- "Other offences" spiked during the 2020 and 2021 lockdowns, most likely
+-- from public health order breaches. Removing it shows the underlying trend.
+-- 2018 is included so 2019 has a previous year to compare against.
+WITH yearly AS (
+    SELECT
+        EXTRACT(YEAR FROM i.month) AS year,
+        SUM(i.incident_count)                                                        AS total_all,
+        SUM(i.incident_count) FILTER (WHERE ot.offence_category <> 'Other offences') AS total_excl_other
+    FROM nsw_incidents i
+    JOIN offence_type ot ON i.offence_id = ot.offence_id
+    WHERE EXTRACT(YEAR FROM i.month) BETWEEN 2018 AND 2025
+    GROUP BY EXTRACT(YEAR FROM i.month)
+)
+SELECT
+    year,
+    total_all,
+    ROUND((total_all - LAG(total_all) OVER (ORDER BY year)) * 100.0
+          / LAG(total_all) OVER (ORDER BY year), 1)               AS pct_change_all,
+    total_excl_other,
+    ROUND((total_excl_other - LAG(total_excl_other) OVER (ORDER BY year)) * 100.0
+          / LAG(total_excl_other) OVER (ORDER BY year), 1)        AS pct_change_excl_other
+FROM yearly
+ORDER BY year;
+
+-- EXTRA 2: Which offences drove the July - August 2021 spike?
+-- Compares the same two months in 2019 (pre-COVID) and 2021 (Greater Sydney
+-- Delta lockdown), sorted by the biggest increase.
+SELECT
+    ot.offence_category,
+    ot.subcategory,
+    SUM(i.incident_count) FILTER (WHERE EXTRACT(YEAR FROM i.month) = 2019) AS jul_aug_2019,
+    SUM(i.incident_count) FILTER (WHERE EXTRACT(YEAR FROM i.month) = 2021) AS jul_aug_2021
+FROM nsw_incidents i
+JOIN offence_type ot ON i.offence_id = ot.offence_id
+WHERE EXTRACT(MONTH FROM i.month) IN (7, 8)
+  AND EXTRACT(YEAR FROM i.month) IN (2019, 2021)
+GROUP BY ot.offence_category, ot.subcategory
+ORDER BY (SUM(i.incident_count) FILTER (WHERE EXTRACT(YEAR FROM i.month) = 2021)
+        - SUM(i.incident_count) FILTER (WHERE EXTRACT(YEAR FROM i.month) = 2019)) DESC
+LIMIT 10;
