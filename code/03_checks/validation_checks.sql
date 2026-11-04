@@ -1,7 +1,7 @@
 --------------------------------------------
 --- 03 VALIDATION CHECKS (after loading) ---
 --------------------------------------------
--- Run after populate_tables.sql to confirm the load is complete and correct.
+-- Run after 04_load_and_populate.sql to confirm the load is complete and correct.
 -- Expected results are in the comments. If a result differs, stop and investigate.
 -- Checks that read the 105.9M-row suburbs table are slow; the rest are fast.
 
