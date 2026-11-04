@@ -7,6 +7,9 @@ data, joined to 2021 ABS census data for 4,520 suburbs. Built with Python,
 PostgreSQL and Power BI.
 
 [View the interactive dashboard](https://app.powerbi.com/view?r=eyJrIjoiMmQyNjVjZDktM2M0OS00ODg0LTgyMDMtMjNlYmY2ZWQ3YmE4IiwidCI6ImJlNGM2MTY5LTAzYTctNDMyNy05ZTk3LTlmOTkyY2NhZTQ0NCJ9&pageName=9e5055ca6004207805c2)
+
+If the link does not work, check the images folder to see the other pages.
+
 ![Dashboard overview](images/dashboard_overview.png)
 
 ---
