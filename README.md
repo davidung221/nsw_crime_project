@@ -56,7 +56,7 @@ Full results, tables and limitations: [docs/findings.md](docs/findings.md)
    analysis.
 6. **Analysed in SQL:** trends, rankings, per-capita rates, correlations, and
    comparisons by disadvantage decile, tested at several population floors.
-7. **Built a Power BI dashboard** around the main question *(in progress)*.
+7. **Built a Power BI dashboard** around the main question.
 
 Problems I hit along the way, and how I fixed them:
 [docs/challenges_and_fixes.md](docs/challenges_and_fixes.md)
