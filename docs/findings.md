@@ -3,7 +3,7 @@
 **Question:** How has crime in NSW changed, and where is it concentrated?
 
 The analysis is split into three parts, which match the SQL files in
-`sql/02_analysis/` and the pages of the dashboard:
+`code/02_analysis/` and the pages of the dashboard:
 
 1. [How has crime changed?](#1-how-has-crime-changed)
 2. [Where is crime concentrated?](#2-where-is-crime-concentrated)
@@ -114,7 +114,7 @@ over 30 years.
 
 ## 2. Where is crime concentrated?
 
-*SQL: `02_where_crime_is_concentrated.sql`*
+*: `02_where_crime_is_concentrated.sql`*
 
 ### By volume: Liverpool leads recently, Sydney CBD leads all-time
 
