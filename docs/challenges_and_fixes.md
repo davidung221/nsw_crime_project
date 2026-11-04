@@ -315,7 +315,7 @@ changed, and where is it concentrated?"*, with one page for each part of the
 answer: how it changed, where, and what it's linked to.
 
 **Feedback I chose not to follow:** "Focus on Sydney only" would have hidden one
-of the clearest findings, that violent crime rates are highest in regional NSW.
+of the key findings, that violent crime rates are highest in regional NSW.
 
 ### 17. The report was slow with 105.9 million rows
 
@@ -326,6 +326,79 @@ would have exceeded the publish-to-web size limit.
 about 12 times fewer rows. Monthly detail stays in the database, and NSW-wide
 monthly analysis uses the much smaller `nsw_incidents` table.
 
+### 18. The map rendered as a grey rectangle
+ 
+**Problem:** the shape map visual lagged badly, then showed only a grey
+rectangle. A GeoJSON version didn't work either.
+ 
+**Cause:** the boundary file was too large and detailed for the visual.
+ 
+**Fix:** simplified the boundaries by 10% in Mapshaper and exported them as
+TopoJSON, which is more compact. The file became much smaller and the map
+rendered correctly.
+ 
+### 19. Most of the map looked the same colour
+ 
+**Problem:** on the suburb map, nearly every suburb was a pale shade, so the map
+showed no pattern.
+ 
+**Cause:** the colour scale ran from the lowest to the highest value. A few
+extreme suburbs, such as Haymarket at 117,483 per 100,000, set the top of the
+scale and pushed everyone else into the palest colours. One fixed maximum
+couldn't work either, because the map switches between measures with very
+different ranges (top values from 5,553 to 117,483).
+ 
+**Fix:** coloured suburbs by quintile instead of raw value. I calculated the
+20th, 40th, 60th and 80th percentiles for each measure in SQL with
+`PERCENTILE_CONT`, and a DAX measure assigns each suburb a band from 1 to 5.
+Each colour now holds about 20% of suburbs, whichever measure is selected.
+ 
+### 20. Filters on a fact table didn't reach the census table
+ 
+**Problem:** two versions of the same bug.
+- In version 1, the scatter chart showed over a dozen dots for some suburbs
+  (e.g. Blacktown) instead of one.
+- In version 2, the suburb filter on the Explore page didn't filter the ranked
+  table, which still listed every suburb.
+**Cause:** both used a suburb column from a fact table (`suburbs` or
+`suburb_year`), which has many rows per suburb. Relationships only filter from
+the lookup table (`census`) to the fact table, not back, so these fields couldn't
+filter population or group suburbs correctly.
+ 
+**Fix:** used `census[sal_code]` and a cleaned `census[Suburb]` name column for
+every axis, slicer and table. The rule I now follow: labels and categories come
+from lookup tables, numbers come from fact tables.
+ 
+### 21. One suburb showed 2.3 million incidents per 100,000
+ 
+**Problem:** Haymarket appeared on the scatter chart with a rate of about
+2.3 million per 100,000.
+ 
+**Cause:** the measure added up incidents from every year (1995 onwards) but
+divided by the 2021 population. 196,922 all-time incidents ÷ 8,305 residents
+× 100,000 ≈ 2.37 million.
+ 
+**Fix:** built the year into the measure, so the incidents and the population
+always cover the same year:
+ 
+```dax
+Rate per 100K =
+DIVIDE (
+    CALCULATE ( [Total Suburb Incidents], DateTable[Year] = 2021 ),
+    [Population]
+) * 100000
+```
+
+### 22. Power BI has no slope chart
+ 
+**Problem:** I wanted a slope chart comparing the top 10 offences in 1995–97 and
+2023–25, with offence names at both ends of each line. Power BI's line chart
+can only label one end.
+ 
+**Fix:** built it from three visuals: a line chart for the lines, plus a table on
+each side for the names, aligned to the dots. A `RANKX` measure ranks each offence
+within each period, and anything outside the top 10 is set to rank 11 ("Not in
+top 10"), so offences that entered or left the list still have a line.
 ---
 
 ## Summary
@@ -349,3 +422,8 @@ monthly analysis uses the much smaller `nsw_incidents` table.
 | 15 | Year 12 showed almost no link | Wrong denominator | Divided by population aged 15+ |
 | 16 | Dashboard had no clear message | Built to explore, not explain | Rebuilt around one question |
 | 17 | Slow report | 105.9M monthly rows | Yearly summary table |
+| 18 | Map showed a grey rectangle | Boundary file too large | Simplified; TopoJSON |
+| 19 | Map looked one colour | A few extreme values set the colour scale | Quintile bands calculated in SQL |
+| 20 | Duplicate dots; suburb filter didn't work | Suburb fields taken from fact tables | Used `census` columns for all labels and filters |
+| 21 | Rate of 2.3M per 100K | All years ÷ one year's population | Fixed the year inside the measure |
+| 22 | No slope chart in Power BI | Line chart labels one end only | Line chart plus two aligned tables; `RANKX` |
