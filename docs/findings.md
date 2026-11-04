@@ -275,7 +275,7 @@ included in the correlation and decile analysis in Section 3, which uses a
 
 ## 3. What is crime linked to?
 
-*SQL: `03_links_to_disadvantage.sql`*
+*SQL: `03_what_is_crime_linked_to.sql`*
 
 All results in this section use 2021 data and suburbs with more than 500 residents
 (1,573 suburbs).
